@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Milo AI</title>
+<style>
+:root{
+  --neon:#ff3b3b;
+  --neon2:#ff8a8a;
+  --card:rgba(15,18,35,0.75);
+  --text:#f1f3ff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  height:100vh;
+  font-family:Segoe UI,system-ui,sans-serif;
+  overflow:hidden;
+  color:var(--text);
+  background:#010114;
+  position:relative;
+}
+
+/* 🌊 VISIBLE NOODLE-LIKE NEON STRINGS */
+.neon-strings{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  pointer-events:none;
+}
+.string{
+  position:absolute;
+  height:3px;
+  border-radius:2px;
+  filter:blur(1px);
+  opacity:1;
+  animation: waveMove 15s linear infinite, waveCurve 4s ease-in-out infinite, pulse 3s ease-in-out infinite;
+}
+.string1{top:15%; left:-200px; width:400px; background:linear-gradient(90deg, transparent, #ff3b3b, #ff8a8a, transparent); animation-delay:0s;}
+.string2{top:45%; left:-250px; width:350px; background:linear-gradient(90deg, transparent, #00f5ff, #ff00ff, transparent); animation-delay:-5s;}
+.string3{top:65%; left:-300px; width:500px; background:linear-gradient(90deg, transparent, #ffaa00, #ff3b3b, transparent); animation-delay:-10s;}
+.string4{top:25%; left:-180px; width:380px; background:linear-gradient(90deg, transparent, #00ff88, #0088ff, transparent); animation-delay:-15s;}
+
+@keyframes waveMove{
+  0%{ transform: translateX(0) rotate(0deg); }
+  100%{ transform: translateX(120vw) rotate(0deg); }
+}
+@keyframes waveCurve{
+  0%,100%{ transform: translateY(0); }
+  25%{ transform: translateY(-15px); }
+  50%{ transform: translateY(15px); }
+  75%{ transform: translateY(-10px); }
+}
+@keyframes pulse{
+  0%,100%{ transform: scaleY(1) scaleX(1); opacity:0.8; }
+  50%{ transform: scaleY(1.2) scaleX(1.05); opacity:1; }
+}
+
+/* DYNAMIC PULSING ORBS */
+.waves{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+.wave{
+  position:absolute;
+  background:linear-gradient(45deg, var(--neon), var(--neon2), transparent);
+  border-radius:50%;
+  filter:blur(30px);
+  opacity:0.5;
+  animation: pulseFloat 10s ease-in-out infinite;
+}
+.wave:nth-child(1){width:300px; height:300px; top:10%; left:10%; animation-delay:0s;}
+.wave:nth-child(2){width:400px; height:400px; top:60%; right:10%; background:linear-gradient(-45deg, #00f5ff, #ff00ff, transparent); animation-delay:-2s;}
+.wave:nth-child(3){width:250px; height:250px; bottom:20%; left:50%; background:linear-gradient(135deg, #ffaa00, var(--neon), transparent); animation-delay:-4s;}
+.wave:nth-child(4){width:350px; height:350px; top:40%; left:60%; background:linear-gradient(225deg, #00ff88, #0088ff, transparent); animation-delay:-6s;}
+@keyframes pulseFloat{
+  0%,100%{transform:scale(1) translate(0,0) rotate(0deg); opacity:0.4;}
+  50%{transform:scale(1.2) translate(20px,-15px) rotate(180deg); opacity:0.7;}
+}
+
+.app{
+  width:95%;
+  max-width:900px;
+  height:90vh;
+  margin:auto;
+  margin-top:5vh;
+  background:var(--card);
+  border-radius:22px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(255,0,0,.4);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.chat{
+  flex:1;
+  padding:20px;
+  overflow-y:auto;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,80,80,0.12), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(120,180,255,0.12), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(180,120,255,0.12), transparent 45%),
+    linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)),
+    url('https://i.postimg.cc/prMhf0k9/bgpic.png');
+  background-size:cover;
+  background-position:center;
+  background-blend-mode: overlay;
+}
+
+header{
+  padding:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+}
+.logo{
+  width:42px;height:42px;border-radius:50%;
+  background:conic-gradient(var(--neon),var(--neon2),var(--neon));
+  animation:spin 6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+
+.msg{
+  max-width:75%;
+  padding:12px 16px;
+  margin-bottom:14px;
+  border-radius:14px;
+  line-height:1.4;
+  backdrop-filter:blur(5px);
+}
+.user{
+  margin-left:auto;
+  background:linear-gradient(135deg,var(--neon2),var(--neon));
+  color:#000;
+}
+.ai{
+  background:rgba(20,20,35,0.9);
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+footer{
+  display:flex;
+  gap:10px;
+  padding:14px;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+}
+input{
+  flex:1;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:rgba(11,14,28,0.9);
+  color:var(--text);
+}
+button{
+  padding:12px 16px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--neon),var(--neon2));
+  font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<div class="neon-strings">
+  <div class="string string1"></div>
+  <div class="string string2"></div>
+  <div class="string string3"></div>
+  <div class="string string4"></div>
+</div>
+
+<div class="waves">
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+  <div class="wave"></div>
+</div>
+
+<div class="app">
+<header>
+  <div class="logo"></div>
+  <div>
+    <h2>Milo AI</h2>
+    <small>Offline Smart Assistant</small>
+  </div>
+</header>
+
+<div class="chat" id="chat"></div>
+
+<footer>
+  <input id="input" placeholder="Ask Milo anything..." />
+  <button onclick="send()">Send</button>
+  <button onclick="startMic()">🎤</button>
+  <button onclick="clearChat()">Clear</button>
+</footer>
+</div>
+
+<script>
+const chat=document.getElementById('chat');
+const input=document.getElementById('input');
+
+function addMsg(text,cls){
+  const d=document.createElement('div');
+  d.className='msg '+cls;
+  d.innerText=text;
+  chat.appendChild(d);
+  chat.scrollTop=chat.scrollHeight;
+}
+
+function normalize(t){
+  return t.toLowerCase().replace(/[^a-z0-9+\-*/^().√∛ ]/g,' ').replace(/\s+/g,' ').trim();
+}
+
+// Mic support
+function startMic(){
+  if(!('webkitSpeechRecognition'in window)) return alert('Mic not supported');
+  const rec=new webkitSpeechRecognition();
+  rec.lang='en-IN';
+  rec.onresult=e=>{
+    input.value=e.results[0][0].transcript;
+    send();
+  };
+  rec.start();
+}
+
+function aiReply(text){
+  const t=normalize(text);
+
+  // Special numbers
+  if(['67','66777','666777','66667777','69'].includes(t)) return t;
+
+  // Time & Date
+  if(/\btime\b/.test(t)) return '🕒 Current Time (IST): '+new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata'});
+  if(/\bdate\b/.test(t)) return '📅 Today\'s Date (IST): '+new Date().toLocaleDateString('en-IN',{timeZone:'Asia/Kolkata'});
+
+  // Math
+  if(/[0-9]/.test(t)&&/[+\-*/^√∛]/.test(t)){
+    try{
+      let expr = t
+        .replace(/square root|sqrt|√/g,'Math.sqrt')
+        .replace(/cube root|cuberoot|∛/g,'Math.cbrt')
+        .replace(/\^/g,'**')
+        .replace(/[^0-9+\-*/().%Mathsqrtcbrt]/g,'');
+      return '🧮 Result: '+Function('return '+expr)();
+    }catch{}
+  }
+
+  const qa=[
+    [['who are you','what are you'],'I am Milo AI, an offline smart assistant.'],
+    [['who made you','who created you'],'I was made by Sriram Pathruni, Shreyas Sreedharan, and Kavin Kashyap.'],
+    [['photosynthesis'],'Photosynthesis is the process by which green plants make food using sunlight, water, and CO2.'],
+    [['gravity'],'Gravity is the force that attracts objects toward each other, especially toward Earth.'],
+    [['friction'],'Friction is the force that resists motion between two surfaces in contact.'],
+    [['prime number'],'A prime number is a number greater than 1 that has exactly two factors: 1 and itself.'],
+    [['fraction'],'A fraction represents a part of a whole.'],
+    [['decimal'],'A decimal is a way of representing numbers using a decimal point.'],
+    [['newton'],'Newton\'s Third Law states that for every action, there is an equal and opposite reaction.'],
+    [['triangle'],'Triangles have three sides, three angles, an angle sum of 180°, and follow the triangle inequality rule.'],
+    [['snowflake'],'Snowflake is a cloud-based data warehouse used for storing, managing, and analyzing large-scale data.'],
+    [['ai ml dl'],'AI is the broad field, Machine Learning allows systems to learn from data, and Deep Learning uses neural networks.'],
+    [['study'],'Studying effectively involves regular revision, understanding concepts, and taking breaks.'],
+    [['concentration'],'You can improve concentration by minimizing distractions, taking short breaks, and practicing mindfulness.'],
+    [['negative thoughts'],'To reduce negative thoughts, practice mindfulness, stay active, and talk to someone you trust.']
+  ];
+
+  for(const [keys,reply] of qa){
+    if(keys.some(k=>t.includes(k))) return reply;
+  }
+
+  if(/\b(hi|hello|hey)\b/.test(t)) return 'Hello 👋 How can I help you today?';
+  if(/\b(thanks|thank you|thx|ty|appreciate it)\b/.test(t)) return 'You\'re very welcome 😊 Happy to help!';
+  if(/\b(bye|cya|see you|catch you later)\b/.test(t)) return 'Goodbye 👋 Take care and see you soon!';
+
+  return 'I am sorry, I cannot help you with this question because I am an offline AI and can answer only from a predefined set of questions. I humbly apologize for my inconvenience.';
+}
+
+function send(){
+  const text=input.value.trim();
+  if(!text) return;
+  input.value='';
+  addMsg(text,'user');
+
+  // Neon string pulse
+  document.querySelectorAll('.string').forEach(s=>{
+    s.style.animation='waveMove 15s linear infinite, waveCurve 4s ease-in-out infinite, pulse 0.6s ease-in-out 1';
+    setTimeout(()=>{ s.style.animation='waveMove 15s linear infinite, waveCurve 4s ease-in-out infinite, pulse 3s ease-in-out infinite'; }, 600);
+  });
+
+  setTimeout(()=>addMsg(aiReply(text),'ai'),400);
+}
+
+function clearChat(){
+  chat.innerHTML='';
+  addMsg('Welcome. I am Milo AI.','ai');
+}
+
+input.addEventListener('keydown',e=>{
+  if(e.key==='Enter') send();
+});
+
+addMsg('Welcome. I am Milo AI.','ai');
+</script>
+</body>
+</html>
