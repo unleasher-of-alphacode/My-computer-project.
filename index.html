@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Milo AI</title>
+<title> Echo AI</title>
 
 <style>
 :root{
@@ -164,7 +164,7 @@ button{
   <header>
     <div class="logo"></div>
     <div>
-      <h2>Milo AI</h2>
+      <h2>Echo AI</h2>
       <small>Offline Smart Assistant</small>
     </div>
   </header>
@@ -172,7 +172,7 @@ button{
   <div class="chat" id="chat"></div>
 
   <footer>
-    <input id="input" placeholder="Ask Milo anything..." />
+    <input id="input" placeholder="Ask Echo anything..." />
     <button onclick="send()">Send</button>
     <button onclick="startMic()">🎤</button>
     <button onclick="clearChat()">Clear</button>
@@ -226,10 +226,10 @@ function aiReply(text){
     }catch{}
   }
 
-  if(/^(67|66777|666777|66667777|69)$/.test(t)) return t;
+  if(/^(67|6677|666777|66667777|69)$/.test(t)) return t;
 
   const qa=[
-    [['who are you','what are you'],'I am Milo AI, an offline smart assistant.'],
+    [['who are you','what are you'],'I am Echo AI, an offline smart assistant.'],
     [['who made you','who created you'],'I was made by Sriram Pathruni, Shreyas Sreedharan, and Kavin Kashyap.'],
     [['photosynthesis'],'Photosynthesis is the process by which green plants make food using sunlight, water, and CO₂.'],
     [['gravity'],'Gravity is the force that attracts objects toward each other.'],
@@ -267,15 +267,16 @@ function send(){
 
 function clearChat(){
   chat.innerHTML='';
-  addMsg('Welcome. I am Milo AI.','ai');
+  addMsg('Welcome. I am Echo AI.','ai');
 }
 
 input.addEventListener('keydown',e=>{
   if(e.key==='Enter') send();
 });
 
-addMsg('Welcome. I am Milo AI.','ai');
+addMsg('Welcome. I am Echo ai.','ai');
 </script>
 
 </body>
 </html>
+
